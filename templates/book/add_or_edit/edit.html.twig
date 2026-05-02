@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Добавление книги{% endblock %}
+
+{%  block body %}
+    <div class="col-md-12 pb-2">
+        <h1>Редактирование книги</h1>
+        {{ include('common/_form.html.twig') }}
+        <a href="{{ path('app_book') }}" class="btn btn-primary mt-2 mb-2">Вернуться к списку</a>
+    </div>
+{%  endblock %}

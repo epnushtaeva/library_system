@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Авторы{% endblock %}
+{% block javascripts %}
+{% endblock %}
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+    <div class="container mt-4">
+        <h1>Авторы</h1>
+        <span class="text-info-1">Вы можете найти автора по ФИО. Достаточно просто ввести зачения в  поле "Search" и нажать Enter!!! В системе реализован удобный механизм поиска и бронирования книг!!</span>
+        <div class="row">
+            <div class="col col-md-12">
+                <a href="{{ path('app_add_author') }}" class="btn btn-primary float-end mt-3">Добавить автора</a>
+            </div>
+        </div>
+        <div class="row">
+            <div>
+                {{ render_datatable(table) }}
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    {% if  errMessage %}
+        <input type="hidden" value="{{ errMessage }}" id="error-message-val"/>
+    {% endif %}
+{% endblock %}

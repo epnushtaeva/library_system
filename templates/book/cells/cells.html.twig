@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ячейки с книгой{% endblock %}
+
+{%  block body %}
+<div class="col-md-12 pb-2">
+    <h1>Ячейки с книгой</h1>
+    <a href="{{ path('app_book') }}" class="btn btn-primary mt-2 mb-2">Вернуться к списку книг</a>
+    <table class="table table-bordered dataTable">
+        <thead>
+            <tr>
+                <th>Ячейка</th>
+                <th>Статус</th>
+                <th>Пользователь, забронировавший/взявший книгу</th>
+                <th>Дата, до которой забронирована книга</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cell in cells %}
+              <tr>
+                <td>{{ cell['cellName'] }}</td>
+                <td>{{ cell['statusName'] }}</td>
+                <td>{{ cell['userFullName'] }}</td>
+                <td>{{ cell['bronedTo'] is empty ? '' : cell['bronedTo'] | format_datetime('short', 'none', locale: 'fr')  }}</td>
+                <td>
+                    {%  if cell['statusName'] == 'Забронирована'%}
+                        <button class="btn btn-primary mt-2 mb-2" onclick="showOnHandModal({{ cell['cellId'] }})">Выдать на руки</button>
+                    {% endif %}
+                    {%  if cell['statusName'] != 'Доступна для бронирования'%}
+                           <button class="btn btn-primary mt-2 mb-2" onclick="showUnBookModal({{ cell['cellId'] }})">Вернуть в статус "Доступна для бронирования"</button>
+                    {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="modal" tabindex="-1" id="change-book-on-hand-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Передача книги на руки</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="set-book-on-hand-form" action="" method="POST">
+                    <div class="modal-body">
+                        <p class="alert alert-danger">Вы уверены, что хотите изменить статус книги на "На руках"?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-danger" value="Изменить"/>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-dismiss="modal">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal" tabindex="-1" id="change-book-unbooking-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Отмена брони</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="set-book-unbooking-form" action="" method="POST">
+                    <div class="modal-body">
+                        <p class="alert alert-danger">Вы уверены, что хотите отменить бронь книги и вернуть ее в статус "Доступна для бронирования"?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-danger" value="Отменить бронь"/>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-dismiss="modal">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</div>
+{%  endblock %}

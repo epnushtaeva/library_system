@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Книги{% endblock %}
+{% block javascripts %}
+{% endblock %}
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+    <div class="container mt-4">
+        <h1>Книги</h1>
+        <span class="text-info-1">Вы можете найти книги по названию, описанию или автору. Достаточно просто ввести зачения в  поле "Search" и нажать Enter!!! В системе реализован удобный механизм поиска и бронирования книг!!</span>
+        <div class="row">
+            <div class="col col-md-12">
+                <a href="{{ path('app_add_book') }}" class="btn btn-primary float-end mt-3">Добавить книгу</a>
+            </div>
+            {% if  successMessage %}
+                    <div class="col col-md-12 mt-2">
+                        <p class="alert alert-info text-info-1">{{ successMessage }}</p>
+                    </div>
+            {% endif %}
+        </div>
+        <div class="row">
+            <div>
+                  {{ render_datatable(table) }}
+            </div>
+        </div>
+    </div>
+    <div class="modal" tabindex="-1" id="brone-book-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Бронирование книги</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="brone-book-form" action="" method="POST">
+                    <div class="modal-body">
+                        <p class="alert alert-info">Вы уверены, что хотите забронировать эту книгу? Забронированную книгу можно будет забрать в течение 10 дней после бронирования в библиотеке.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" value="Забронировать"/>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-dismiss="modal">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% if  errMessage %}
+        <input type="hidden" value="{{ errMessage }}" id="error-message-val"/>
+    {% endif %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        function showBroneModal(bookId) {
+            $('#brone-book-form').attr('action', '/brone_book/' + bookId);
+            $('#brone-book-modal').modal('show');
+        }
+    </script>
+{% endblock %}
